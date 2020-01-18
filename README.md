@@ -16,7 +16,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
 
     - name: Setup .net framework env
       uses: vrnobody/Setup-DotNetFrameworkEnv@v1
