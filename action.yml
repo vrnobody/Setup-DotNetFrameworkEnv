@@ -3,7 +3,7 @@ description: 'Setup Nuget, MSBuild and VSTest.'
 author: 'nobody'
 runs:
   using: 'node12'
-  main: 'lib/main.js'
+  main: 'dist/index.js'
 branding:
   icon: 'download'
   color: 'purple'
