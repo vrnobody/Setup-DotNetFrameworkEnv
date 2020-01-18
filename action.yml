@@ -1,0 +1,9 @@
+name: 'Setup .net framework env'
+description: 'Setup Nuget, MSBuild and VSTest.'
+author: 'nobody'
+runs:
+  using: 'node12'
+  main: 'lib/main.js'
+branding:
+  icon: 'download'
+  color: 'purple'
