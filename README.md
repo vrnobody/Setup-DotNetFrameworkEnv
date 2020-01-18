@@ -38,6 +38,6 @@ The scripts and documentation in this project are released under the [MIT Licens
 
 # Credits
 
-https://github.com/warrenbuckley/Setup-Nuget
-https://github.com/warrenbuckley/Setup-MSBuild
-https://github.com/Malcolmnixon/Setup-VSTest
+https://github.com/warrenbuckley/Setup-Nuget  
+https://github.com/warrenbuckley/Setup-MSBuild  
+https://github.com/Malcolmnixon/Setup-VSTest  
