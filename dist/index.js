@@ -1253,10 +1253,9 @@ function Main() {
                 core.setFailed("This action only works for Windows.");
                 return;
             }
-            const nugetLocation = (yield tc.find("nuget", nugetVersion)) || (yield DownloadNuget());
+            const nugetLocation = tc.find("nuget", nugetVersion) || (yield DownloadNuget());
             core.debug(`Found nuget at ${nugetLocation}`);
-            core.addPath(nugetLocation);
-            const vsWhereLocation = (yield tc.find("vswhere", vsWhereVersion)) || (yield DownloadVsWhere());
+            const vsWhereLocation = tc.find("vswhere", vsWhereVersion) || (yield DownloadVsWhere());
             core.debug(`Found vswhere.exe at ${vsWhereLocation} `);
             const AddToPathHelper = CreateAddToPathHelper(vsWhereLocation);
             AddToPathHelper("MSBuildPath", FindMSBuild);
@@ -1281,6 +1280,7 @@ function DownloadNuget() {
         var cachedToolDir = yield tc.cacheDir(folder, "nuget", nugetVersion);
         core.debug(`Cached Tool Dir ${cachedToolDir}`);
         // Add Nuget.exe CLI tool to path for other steps to be able to access it
+        core.addPath(cachedToolDir);
         return cachedToolDir;
     });
 }
@@ -1297,12 +1297,12 @@ function DownloadVsWhere() {
     });
 }
 function CreateAddToPathHelper(vswhereLocation) {
-    let l = vswhereLocation;
+    let vw = vswhereLocation;
     return function (tag, handler) {
         return __awaiter(this, void 0, void 0, function* () {
-            var path = yield handler(l);
+            var path = yield handler(vw);
             core.debug(`${tag} == ${path}`);
-            yield core.addPath(path);
+            core.addPath(path);
         });
     };
 }

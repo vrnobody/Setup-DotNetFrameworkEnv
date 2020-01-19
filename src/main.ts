@@ -26,11 +26,10 @@ async function Main() {
       return;
     }
 
-    const nugetLocation = await tc.find("nuget", nugetVersion) || await DownloadNuget();
+    const nugetLocation = tc.find("nuget", nugetVersion) || await DownloadNuget();
     core.debug(`Found nuget at ${nugetLocation}`);
-    core.addPath(nugetLocation);
 
-    const vsWhereLocation = await tc.find("vswhere", vsWhereVersion) || await DownloadVsWhere();
+    const vsWhereLocation = tc.find("vswhere", vsWhereVersion) || await DownloadVsWhere();
     core.debug(`Found vswhere.exe at ${vsWhereLocation} `);
 
     const AddToPathHelper = CreateAddToPathHelper(vsWhereLocation);
@@ -44,7 +43,8 @@ async function Main() {
 
 Main();
 
-async function DownloadNuget():Promise<string>{
+async function DownloadNuget(): Promise<string>{
+
    // Download latest Nuget.exe
    core.debug("Downloading Nuget tool");
    const nugetPath = await tc.downloadTool(nugetUrl);
@@ -59,10 +59,12 @@ async function DownloadNuget():Promise<string>{
    core.debug(`Cached Tool Dir ${cachedToolDir}`);
 
    // Add Nuget.exe CLI tool to path for other steps to be able to access it
+   core.addPath(cachedToolDir);
+
    return cachedToolDir;
 }
 
-async function DownloadVsWhere():Promise<string> {
+async function DownloadVsWhere(): Promise<string> {
 
   core.debug(`Downloading VSWhere ${vsWhereVersion} tool`);
   const vsWherePath = await tc.downloadTool(vsWhereUrl);
@@ -76,16 +78,16 @@ async function DownloadVsWhere():Promise<string> {
   return await tc.cacheDir(folder, "vswhere", vsWhereVersion);
 }
 
-function CreateAddToPathHelper(vswhereLocation:string){
-  let l = vswhereLocation;
-  return async function (tag:string, handler){
-    var path = await handler(l);
+function CreateAddToPathHelper(vswhereLocation: string){
+  let vw = vswhereLocation;
+  return async function (tag: string, handler:(location: string) => Promise<string>){
+    var path = await handler(vw);
     core.debug(`${tag} == ${path}`);
-    await core.addPath(path);  
+    core.addPath(path);  
   }
 }
 
-async function FindMSBuild(pathToVSWhere:string):Promise<string>{
+async function FindMSBuild(pathToVSWhere: string): Promise<string>{
 
   var msBuildPath = "";
 
@@ -112,7 +114,7 @@ async function FindMSBuild(pathToVSWhere:string):Promise<string>{
   return folderForMSBuild;
 }
 
-async function FindVSTest(pathToVSWhere:string):Promise<string>{
+async function FindVSTest(pathToVSWhere: string): Promise<string>{
 
   let vsTestPath = "";
 
