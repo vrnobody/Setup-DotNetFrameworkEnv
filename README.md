@@ -1,7 +1,5 @@
 
 # Setup .net framework env
-
-暴力的把Setup-MSBuild，Setup-VSTest和Setup-Nuget三个github actions搓成一团。  
 Combine Setup-MSBuild, Setup-VSTest and Setup-Nuget together.  
 
 # Usage
