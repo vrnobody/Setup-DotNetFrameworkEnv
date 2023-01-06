@@ -21,7 +21,7 @@ const vsWhereUrl = `https://github.com/microsoft/vswhere/releases/download/${vsW
 async function Main() {
   try {
 
-    if(process.platform !== 'win32'){
+    if (process.platform !== 'win32') {
       core.setFailed("This action only works for Windows.");
       return;
     }
@@ -37,31 +37,33 @@ async function Main() {
     AddToPathHelper("VSTestPath", FindVSTest);
 
   } catch (error) {
-    core.setFailed(error.message);
+    if (error instanceof Error) {
+      core.setFailed(error.message);
+    }
   }
 }
 
 Main();
 
-async function DownloadNuget(): Promise<string>{
+async function DownloadNuget(): Promise<string> {
 
-   // Download latest Nuget.exe
-   core.debug("Downloading Nuget tool");
-   const nugetPath = await tc.downloadTool(nugetUrl);
+  // Download latest Nuget.exe
+  core.debug("Downloading Nuget tool");
+  const nugetPath = await tc.downloadTool(nugetUrl);
 
-   // Rename the file which is a GUID without extension
-   var folder = path.dirname(nugetPath);
-   var fullPath = path.join(folder, "nuget.exe");
-   fs.renameSync(nugetPath, fullPath);
+  // Rename the file which is a GUID without extension
+  var folder = path.dirname(nugetPath);
+  var fullPath = path.join(folder, "nuget.exe");
+  fs.renameSync(nugetPath, fullPath);
 
-   //Cache the directory with Nuget in it - which returns a NEW cached location
-   var cachedToolDir = await tc.cacheDir(folder, "nuget", nugetVersion);
-   core.debug(`Cached Tool Dir ${cachedToolDir}`);
+  //Cache the directory with Nuget in it - which returns a NEW cached location
+  var cachedToolDir = await tc.cacheDir(folder, "nuget", nugetVersion);
+  core.debug(`Cached Tool Dir ${cachedToolDir}`);
 
-   // Add Nuget.exe CLI tool to path for other steps to be able to access it
-   core.addPath(cachedToolDir);
+  // Add Nuget.exe CLI tool to path for other steps to be able to access it
+  core.addPath(cachedToolDir);
 
-   return cachedToolDir;
+  return cachedToolDir;
 }
 
 async function DownloadVsWhere(): Promise<string> {
@@ -78,20 +80,20 @@ async function DownloadVsWhere(): Promise<string> {
   return await tc.cacheDir(folder, "vswhere", vsWhereVersion);
 }
 
-function CreateAddToPathHelper(vswhereLocation: string){
+function CreateAddToPathHelper(vswhereLocation: string) {
   let vw = vswhereLocation;
-  return async function (tag: string, handler:(location: string) => Promise<string>){
+  return async function (tag: string, handler: (location: string) => Promise<string>) {
     var path = await handler(vw);
     core.debug(`${tag} == ${path}`);
-    core.addPath(path);  
+    core.addPath(path);
   }
 }
 
-async function FindMSBuild(pathToVSWhere: string): Promise<string>{
+async function FindMSBuild(pathToVSWhere: string): Promise<string> {
 
   var msBuildPath = "";
 
-  const options:ExecOptions = {};
+  const options: ExecOptions = {};
   options.listeners = {
     stdout: (data: Buffer) => {
       var output = data.toString();
@@ -103,7 +105,7 @@ async function FindMSBuild(pathToVSWhere: string): Promise<string>{
   var vsWhereExe = path.join(pathToVSWhere, "vswhere.exe");
   await exec.exec(vsWhereExe, ['-latest', '-requires', 'Microsoft.Component.MSBuild', '-find', 'MSBuild\\**\\Bin\\MSBuild.exe'], options);
 
-  if(msBuildPath === ""){
+  if (msBuildPath === "") {
     core.setFailed("Unable to find MSBuild.exe");
   }
 
@@ -114,11 +116,11 @@ async function FindMSBuild(pathToVSWhere: string): Promise<string>{
   return folderForMSBuild;
 }
 
-async function FindVSTest(pathToVSWhere: string): Promise<string>{
+async function FindVSTest(pathToVSWhere: string): Promise<string> {
 
   let vsTestPath = "";
 
-  const options:ExecOptions = {};
+  const options: ExecOptions = {};
   options.listeners = {
     stdout: (data: Buffer) => {
       var output = data.toString();
@@ -132,7 +134,7 @@ async function FindVSTest(pathToVSWhere: string): Promise<string>{
   // https://github.com/Malcolmnixon/Setup-VSTest/pull/3/commits/a773224064f250e2c6d53ad44764727a7dcea5e4
   await exec.exec(vsWhereExe, ['-latest', '-products', '*', '-requires', 'Microsoft.VisualStudio.Workload.ManagedDesktop', 'Microsoft.VisualStudio.Workload.Web', '-requiresAny', '-property', 'installationPath'], options);
 
-  if(vsTestPath === ""){
+  if (vsTestPath === "") {
     core.setFailed("Unable to find VSTest.Console.exe");
   }
 
