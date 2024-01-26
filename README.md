@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Setup .net framework env
-        uses: vrnobody/Setup-DotNetFrameworkEnv@v1.3
+        uses: vrnobody/Setup-DotNetFrameworkEnv@v1.20
 
       - name: Restore Nuget packages
         run: nuget restore MyProject.sln
