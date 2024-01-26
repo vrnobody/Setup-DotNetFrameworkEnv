@@ -2,7 +2,7 @@ name: 'Setup .net framework env'
 description: 'Setup Nuget, MSBuild and VSTest.'
 author: 'nobody'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
 branding:
   icon: 'download'
