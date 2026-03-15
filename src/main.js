@@ -1,8 +1,8 @@
 import * as core from '@actions/core'
 import * as tc from '@actions/tool-cache'
 import * as exec from '@actions/exec'
-import * as path from 'node:path'
-import * as fs from 'node:fs'
+import * as path from 'path'
+import * as fs from 'fs'
 
 /*
 Credits:
@@ -168,4 +168,4 @@ async function Main() {
     }
 }
 
-await Main()
+Main()

@@ -4,7 +4,9 @@
   "description": "Setup .net framework env",
   "type": "module",
   "main": "src/main.js",
-  "scripts": {},
+  "scripts": {
+    "build": "rollup --config rollup.config.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vrnobody/Setup-DotNetFrameworkEnv.git"
@@ -21,5 +23,10 @@
     "@actions/core": "^3.0.0",
     "@actions/exec": "^3.0.0",
     "@actions/tool-cache": "^4.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^29.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "rollup": "^4.59.0"
   }
 }
