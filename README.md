@@ -12,13 +12,13 @@ on: [push]
 
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: windows-2025
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
 
       - name: Setup .net framework env
-        uses: vrnobody/Setup-DotNetFrameworkEnv@v1.20
+        uses: vrnobody/Setup-DotNetFrameworkEnv@v1.24
 
       - name: Restore Nuget packages
         run: nuget restore MyProject.sln
@@ -44,6 +44,9 @@ cd Setup-DotNetFrameworkEnv
 npm install
 npm run build
 ```
+
+# Update log
+[update-log.md](./update-log.md)
 
 # License
 

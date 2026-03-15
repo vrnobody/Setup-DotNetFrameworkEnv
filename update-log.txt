@@ -1,2 +1,0 @@
-v1.20
-update node to v20

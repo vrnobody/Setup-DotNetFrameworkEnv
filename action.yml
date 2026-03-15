@@ -1,9 +1,6 @@
-name: 'Setup .net framework env'
-description: 'Setup Nuget, MSBuild and VSTest.'
-author: 'nobody'
+name: "Setup .net framework env"
+description: "Setup Nuget, MSBuild and VSTest."
+author: "nobody"
 runs:
-  using: 'node20'
-  main: 'dist/index.js'
-branding:
-  icon: 'download'
-  color: 'purple'
+  using: "node24"
+  main: "src/main.js"
