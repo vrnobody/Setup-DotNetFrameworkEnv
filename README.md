@@ -1,3 +1,6 @@
+# Deprecated
+This project is deprecated. Please consider using [https://github.com/vrnobody/setup-net45](https://github.com/vrnobody/setup-net45).  
+2026-03-16
 
 # Setup .net framework env
 Combine Setup-MSBuild, Setup-VSTest and Setup-Nuget together.  
@@ -12,7 +15,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: windows-2025
+    runs-on: windows-2019
 
     steps:
       - uses: actions/checkout@v6
